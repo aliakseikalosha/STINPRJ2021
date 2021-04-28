@@ -5,6 +5,7 @@ using UnityEngine;
 public class Application : MonoBehaviour
 {
     [SerializeField] private UserInterface ui;
+    [SerializeField] private DataManager data;
 
     private void Awake()
     {
