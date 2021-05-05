@@ -4,6 +4,6 @@ public class DiffrenceWindow : UserInterface.Window
 {
     protected override void Init()
     {
-        throw new NotImplementedException();
+
     }
 }
