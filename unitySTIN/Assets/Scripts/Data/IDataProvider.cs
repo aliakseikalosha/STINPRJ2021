@@ -2,8 +2,15 @@
 
 public interface IDataProvider
 {
+    string PathFor(DateTime day,string fileName);
     Action OnNewData { get; }
-    void HasDataFor(DateTime day);
-    void TryGetNewData(out DayData data);
-    void LoadData();
+    bool HasDataFor(DateTime day);
+    StateCaseData CaseDataFor(DateTime day);
+    void TryGetNewData();
+    void SaveData(string csv, DateTime day);
+}
+
+public interface IDataProviderFull: IDataProvider
+{
+    VacinationData VaccinationDataFor(DateTime day);
 }
