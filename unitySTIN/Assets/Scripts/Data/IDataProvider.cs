@@ -2,7 +2,7 @@
 
 public interface IDataProvider
 {
-    string PathFor(DateTime day);
+    string PathFor(DateTime day,string fileName);
     Action OnNewData { get; }
     bool HasDataFor(DateTime day);
     StateCaseData CaseDataFor(DateTime day);
