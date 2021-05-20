@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Data
 {
-    public class WHODataProvider : DataProvider
+    public class WHODataProvider : DataProvider, IDataProviderFull
     {
         private string vacFileName;
         WHODataProvider()
@@ -26,11 +26,11 @@ namespace Assets.Scripts.Data
             return null;
         }
 
-        public VacinationData VaccinationDataFor(DateTime day, string state)
+        public VacinationData VaccinationDataFor(DateTime day)
         {
             if (HasDataFor(day))
             {
-                return CSVParserVaccination(File.ReadAllText(PathFor(day, vacFileName)));
+                return CSVParserVaccination(File.ReadAllText(PathFor(day, vacFileName)), day);
             }
             return null;
         }
@@ -48,12 +48,12 @@ namespace Assets.Scripts.Data
             }, Debug.LogError);
             NetworkManager.I.Get("https://covid19.who.int/who-data/vaccination-data.csv", (csv) =>
             {
-                var vacData = CSVParserVaccination(csv);
-                //if (!HasDataFor(vacData.updated))
-                //{
-                //    SaveData(csv, vacData.updated);
-                //    OnNewData?.Invoke();
-                //}
+                var vacData = CSVParserVaccination(csv, DateTime.Now);
+                if (!HasDataFor(vacData.day))
+                {
+                    SaveData(csv, vacData.day);
+                    OnNewData?.Invoke();
+                }
             }, Debug.LogError);
         }
 
@@ -80,9 +80,25 @@ namespace Assets.Scripts.Data
             return null;
         }
 
-        private VacinationData CSVParserVaccination(string csv)
+        private VacinationData CSVParserVaccination(string csv, DateTime day)
         {
-            throw new NotImplementedException();
+            var vacData = new VacinationData { day = day };
+            var rows = csv.Split('\n');
+            var countryIndex = Array.IndexOf(rows[0].Split(','), "COUNTRY");
+            var totalVacIndex = Array.IndexOf(rows[0].Split(','), "TOTAL_VACCINATIONS");
+            var totalVac100Index = Array.IndexOf(rows[0].Split(','), "TOTAL_VACCINATIONS_PER100");
+            for (int i = 1; i < rows.Length; i++)
+            {
+                var data = rows[i].Split(',');
+                var percent = float.Parse(data[totalVac100Index]);
+                var pop = (int) (int.Parse(data[totalVacIndex])/percent)*100;
+                vacData.data.Add(new VacinationStateData {
+                    Percent = percent,
+                    Population = pop,
+                    StateName = data[countryIndex]
+                });
+            }
+            return vacData;
         }
 
         public override bool HasDataFor(DateTime day)
