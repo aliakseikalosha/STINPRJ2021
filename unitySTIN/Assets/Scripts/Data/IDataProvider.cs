@@ -12,5 +12,7 @@ public interface IDataProvider
 
 public interface IDataProviderFull: IDataProvider
 {
+    bool HasVacDataFor(DateTime day);
+    void SaveVacData(string csv, DateTime day);
     VacinationData VaccinationDataFor(DateTime day);
 }
