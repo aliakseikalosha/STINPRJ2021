@@ -12,7 +12,7 @@ namespace Assets.Scripts.Data
     public class WHODataProvider : DataProvider, IDataProviderFull
     {
         private string vacFileName;
-        WHODataProvider()
+        public WHODataProvider()
         {
             caseFileName = "WHOcases.csv";
             vacFileName = "WHOvaccination.csv";
@@ -64,7 +64,7 @@ namespace Assets.Scripts.Data
             var dateIndex = Array.IndexOf(rows[0].Split(','), "Date_reported");
             var casesTodayIndex = Array.IndexOf(rows[0].Split(','), "New_cases");
             var casesTotalIndex = Array.IndexOf(rows[0].Split(','), "Cumulative_cases");
-            for (int i = rows.Length-1; i > 0; i--)
+            for (int i = rows.Length - 1; i > 0; i--)
             {
                 var data = rows[i].Split(',');
                 if (data[countryCodeIndex] == "CZ")
@@ -91,8 +91,9 @@ namespace Assets.Scripts.Data
             {
                 var data = rows[i].Split(',');
                 var percent = float.Parse(data[totalVac100Index]);
-                var pop = (int) (int.Parse(data[totalVacIndex])/percent)*100;
-                vacData.data.Add(new VacinationStateData {
+                var pop = (int)(int.Parse(data[totalVacIndex]) / percent) * 100;
+                vacData.data.Add(new VacinationStateData
+                {
                     Percent = percent,
                     Population = pop,
                     StateName = data[countryIndex]

@@ -78,25 +78,26 @@ public class UserInterface : MonoBehaviour
         }
         protected virtual void GoToPrevDay()
         {
-            if (DataManager.I.HasPrevDayData)
+            if (DataManager.I.HasDataForPrevDay(curretDay))
             {
-                ShowDay(DataManager.I.PrevDayData);
+                ShowDay(DataManager.I.PrevDayWithData(curretDay));
             }
         }
         protected virtual void GoToNextDay()
         {
-            if (DataManager.I.HasNextDayData)
+            if (DataManager.I.HasDataForNextDay(curretDay))
             {
-                ShowDay(DataManager.I.NextDayData);
+                ShowDay(DataManager.I.NextDayWithData(curretDay));
             }
         }
 
         protected virtual void ShowDay(DateTime day)
         {
-            nextDay.interactable = DataManager.I.HasNextDayData;
-            nextDayText.text = nextDay.interactable ? $"{DataManager.I.NextDay:dd/MM/yyyy}" : "No Data";
-            prevDay.interactable = DataManager.I.HasPrevDayData;
-            prevDayText.text = prevDay.interactable ? $"{DataManager.I.PrevDay:dd/MM/yyyy}" : "No Data";
+            curretDay = day;
+            nextDay.interactable = DataManager.I.HasDataForNextDay(curretDay);
+            nextDayText.text = nextDay.interactable ? $"{DataManager.I.NextDayWithData(curretDay):dd/MM/yyyy}" : "No Data";
+            prevDay.interactable = DataManager.I.HasDataForPrevDay(curretDay);
+            prevDayText.text = prevDay.interactable ? $"{DataManager.I.PrevDayWithData(curretDay):dd/MM/yyyy}" : "No Data";
             refresh.interactable = (day.Date == DataManager.I.CurrentDay.Date);
         }
 

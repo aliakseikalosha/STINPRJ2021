@@ -40,7 +40,7 @@ public class VacinationWindowElement : MonoBehaviour
     {
         var data = VaccinationWindow.countries.First(c => c.StateName == options[index].text);
         percent.text = $"{data.Percent:X3}%";
-        population.text = $"{data.Population}";
+        population.text = $"{data.Population}"; 
         OnCountrySelected?.Invoke(index, data.StateName);
     }
 }
