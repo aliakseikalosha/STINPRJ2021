@@ -42,7 +42,7 @@ namespace Assets.Scripts.Data
 
         public override void SaveData(string csv, DateTime day)
         {
-            File.WriteAllText(PathFor(day, caseFileName), csv);
+            SaveData(csv, day, caseFileName);
         }
 
         public override StateCaseData CaseDataFor(DateTime day)

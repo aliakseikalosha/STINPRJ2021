@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -49,9 +50,9 @@ namespace Assets.Scripts.Data
             NetworkManager.I.Get("https://covid19.who.int/who-data/vaccination-data.csv", (csv) =>
             {
                 var vacData = CSVParserVaccination(csv, DateTime.Now);
-                if (!HasDataFor(vacData.day))
+                if (!HasVacDataFor(vacData.day))
                 {
-                    SaveData(csv, vacData.day);
+                    SaveVacData(csv, vacData.day);
                     OnNewData?.Invoke();
                 }
             }, Debug.LogError);
@@ -61,10 +62,10 @@ namespace Assets.Scripts.Data
         {
             var rows = csv.Split('\n');
             var countryCodeIndex = Array.IndexOf(rows[0].Split(','), "Country_code");
-            var dateIndex = Array.IndexOf(rows[0].Split(','), "Date_reported");
+            var dateIndex = 0;//Array.IndexOf(rows[0].Split(','), "Date_reported");
             var casesTodayIndex = Array.IndexOf(rows[0].Split(','), "New_cases");
             var casesTotalIndex = Array.IndexOf(rows[0].Split(','), "Cumulative_cases");
-            for (int i = rows.Length - 1; i > 0; i--)
+            for (int i = rows.Length - 2; i > 0; i--)
             {
                 var data = rows[i].Split(',');
                 if (data[countryCodeIndex] == "CZ")
@@ -73,7 +74,7 @@ namespace Assets.Scripts.Data
                     {
                         PerDay = int.Parse(data[casesTodayIndex]),
                         Total = int.Parse(data[casesTotalIndex]),
-                        updated = DateTime.Parse(data[dateIndex])
+                        updated = DateTime.ParseExact(data[dateIndex], "yyyy-MM-dd", CultureInfo.InvariantCulture)
                     };
                 }
             }
@@ -87,9 +88,19 @@ namespace Assets.Scripts.Data
             var countryIndex = Array.IndexOf(rows[0].Split(','), "COUNTRY");
             var totalVacIndex = Array.IndexOf(rows[0].Split(','), "TOTAL_VACCINATIONS");
             var totalVac100Index = Array.IndexOf(rows[0].Split(','), "TOTAL_VACCINATIONS_PER100");
-            for (int i = 1; i < rows.Length; i++)
+            var regex = new Regex("(?<=^|,)(\"(?:[^\"]|\"\")*\"|[^,]*)");
+            for (int i = 1; i < rows.Length - 1; i++)
             {
-                var data = rows[i].Split(',');
+                var data = new List<string>();
+
+                foreach (Match m in regex.Matches(rows[i]))
+                {
+                    data.Add(m.Value);
+                }
+                if (string.IsNullOrEmpty(data[totalVac100Index]) || string.IsNullOrEmpty(data[totalVacIndex]))
+                {
+                    continue;
+                }
                 var percent = float.Parse(data[totalVac100Index]);
                 var pop = (int)(int.Parse(data[totalVacIndex]) / percent) * 100;
                 vacData.data.Add(new VacinationStateData
@@ -114,12 +125,12 @@ namespace Assets.Scripts.Data
 
         public override void SaveData(string csv, DateTime day)
         {
-            File.WriteAllText(PathFor(day, caseFileName), csv);
+            SaveData(csv, day, caseFileName);
         }
 
         public void SaveVacData(string csv, DateTime day)
         {
-            File.WriteAllText(PathFor(day, vacFileName), csv);
+            SaveData(csv, day, vacFileName);
         }
     }
 }
