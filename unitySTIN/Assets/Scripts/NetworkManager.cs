@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
+using System.IO.Compression;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -29,8 +32,21 @@ public class NetworkManager : MonoBehaviour
                     onError?.Invoke(w.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    Debug.Log($":Received: {w.downloadHandler.text}");
-                    onSuccess?.Invoke(w.downloadHandler.text);
+                    string text;
+                    if (w.GetResponseHeader("Content-Encoding") == "gzip")
+                    {
+                        // GZipStream is from System.IO.Compression in .Net 4.5+
+                        var stream = new StreamReader(new GZipStream(new MemoryStream(w.downloadHandler.data),
+                        CompressionMode.Decompress));
+                        text = stream.ReadToEnd();
+                        stream.Close();
+                    }
+                    else
+                    {
+                        text = w.downloadHandler.text;
+                    }
+                   // Debug.Log($"{w.url}:Received: {text}");
+                    onSuccess?.Invoke(text);
                     break;
             }
         }));
@@ -61,7 +77,6 @@ public class NetworkManager : MonoBehaviour
                     Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
                     break;
             }
         }
