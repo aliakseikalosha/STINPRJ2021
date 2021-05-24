@@ -24,21 +24,21 @@ public class VacinationWindowElement : MonoBehaviour
 
     private void ChangeCountrySelection(string text)
     {
-        if (text == None)
-        {
-            country.ClearOptions();
-            country.AddOptions(options);
-            return;
-        }
-        var newOptions = options.Where(c => c.text.ToLower().StartsWith(text.ToLower()[0].ToString()) && c.text != None).ToList();
-        if (newOptions.Count == 0)
-        {
-            newOptions.Add(new TMP_Dropdown.OptionData(None));
-        }
-
         country.ClearOptions();
-        country.AddOptions(newOptions);
-        SelectCountry(0);
+        if (text == None || text == "")
+        {
+            country.AddOptions(options);
+            percent.text = string.Empty;
+            population.text = string.Empty;
+        }
+        else
+        {
+            var newOptions = new List<TMP_Dropdown.OptionData>();
+            newOptions.Add(new TMP_Dropdown.OptionData(None));
+            newOptions.AddRange(options.Where(c => c.text.ToLower().StartsWith(text.ToLower().ToString()) && c.text != None).ToList());
+            country.AddOptions(newOptions);
+        }
+        country.SetValueWithoutNotify(0);
     }
 
     public void Init(int index, string selected = null)
