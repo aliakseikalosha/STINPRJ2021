@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI.Extensions;
 
 public class VacinationWindowElement : MonoBehaviour
 {
     public Action<int, string> OnCountrySelected;
 
-    private static List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
-    [SerializeField] private TMP_Dropdown conutry = null;
+    private static List<string> options = new List<string>();
+    [SerializeField] private AutoCompleteComboBox country = null;
+    [SerializeField] private TMP_Text czechia = null;
     [SerializeField] private TMP_Text percent = null;
     [SerializeField] private TMP_Text population = null;
     private static string None = "None";
@@ -19,16 +21,13 @@ public class VacinationWindowElement : MonoBehaviour
         id = index;
         if (options.Count == 0)
         {
-            conutry.ClearOptions();
-            conutry.AddOptions(new List<TMP_Dropdown.OptionData> { new TMP_Dropdown.OptionData(None) });
-            conutry.AddOptions(VaccinationWindow.countries.OrderBy(c => c.StateName).Select(c => new TMP_Dropdown.OptionData(c.StateName)).ToList());
-            options = conutry.options.ToList();
+            options = new List<string> { None };
+            options.AddRange(VaccinationWindow.countries.OrderBy(c => c.StateName).Select(c => c.StateName));
         }
-        if (conutry.options.Count != options.Count)
+        if (country.AvailableOptions.Count != options.Count)
         {
-            conutry.ClearOptions();
-            conutry.AddOptions(options);
-            conutry.onValueChanged.AddListener(SelectCountry);
+            country.SetAvailableOptions(options);
+            country.OnSelectionChanged.AddListener(SelectCountry);
         }
         if (string.IsNullOrEmpty(selected) || selected == None)
         {
@@ -37,31 +36,30 @@ public class VacinationWindowElement : MonoBehaviour
         }
         else
         {
-            var opIndex = options.IndexOf(options.First(c => c.text == selected));
-            conutry.SetValueWithoutNotify(opIndex);
-            SelectCountry(opIndex);
+            country.OnValueChanged(selected);
+            SelectCountry(selected, true);   
         }
     }
 
-    private void SelectCountry(int index)
+    private void SelectCountry(string text, bool valid)
     {
-        if (index > 0)
+        if (valid && text != None)
         {
-            var data = VaccinationWindow.countries.First(c => c.StateName == options[index].text);
+            var data = VaccinationWindow.countries.First(c => c.StateName == text);
             percent.text = $"{data.Percent:F2}%";
             population.text = $"{data.Population}";
-            OnCountrySelected?.Invoke(id, data.StateName);
         }
         else
         {
             percent.text = string.Empty;
             population.text = string.Empty;
-            OnCountrySelected?.Invoke(id, None);
         }
+        OnCountrySelected?.Invoke(id, None);
     }
 
-    public void DisableSelection()
+    public void SetInteractive(bool active)
     {
-        conutry.interactable = false;
+        country.gameObject.SetActive(active);
+        czechia.gameObject.SetActive(!active);
     }
 }

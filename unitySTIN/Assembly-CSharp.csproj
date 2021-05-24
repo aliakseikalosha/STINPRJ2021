@@ -58,13 +58,19 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\UI\UserInterface.cs" />
     <Compile Include="Assets\Scripts\Data\DataManager.cs" />
+    <Compile Include="Assets\Scripts\Data\WHODataProvider.cs" />
+    <Compile Include="Assets\Scripts\UI\VacinationWindowElement.cs" />
     <Compile Include="Assets\Scripts\Data\DayData.cs" />
     <Compile Include="Assets\Scripts\Application.cs" />
     <Compile Include="Assets\Scripts\UI\DiffrenceWindow.cs" />
     <Compile Include="Assets\Scripts\Data\CasesData.cs" />
     <Compile Include="Assets\Scripts\Data\IDataProvider.cs" />
+    <Compile Include="Assets\Scripts\UI\DiffrenceWindowElement.cs" />
+    <Compile Include="Assets\Scripts\UI\VaccinationWindow.cs" />
     <Compile Include="Assets\Scripts\Data\VacinationData.cs" />
+    <Compile Include="Assets\Scripts\Data\MzcrDataProvider.cs" />
     <Compile Include="Assets\Scripts\NetworkManager.cs" />
+    <Compile Include="Assets\Scripts\Data\DataProvider.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -768,6 +774,12 @@
     </Reference>
     <Reference Include="Unity.VisualScripting.State">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityUIExtensions">
+      <HintPath>Library\ScriptAssemblies\UnityUIExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityUIExtensions.editor">
+      <HintPath>Library\ScriptAssemblies\UnityUIExtensions.editor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -62,10 +62,7 @@ public class VaccinationWindow : UserInterface.Window
         for (int i = 0; i < elements.Count; i++)
         {
             VacinationWindowElement item = elements[i];
-            if(i == 0)
-            {
-                item.DisableSelection();
-            }
+            item.SetInteractive(i != 0);
             item.OnCountrySelected -= SetCountry;
             item.OnCountrySelected += SetCountry;
             item.Init(i, selectedCountries[i]);
