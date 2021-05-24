@@ -9,59 +9,83 @@ public class VacinationWindowElement : MonoBehaviour
     public Action<int, string> OnCountrySelected;
 
     private static List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
-    [SerializeField] private TMP_Dropdown conutry = null;
+    [SerializeField] private TMP_Dropdown country = null;
+    [SerializeField] private TMP_InputField countryInput = null;
     [SerializeField] private TMP_Text percent = null;
     [SerializeField] private TMP_Text population = null;
     private static string None = "None";
     private int id = -1;
+
+    private void Awake()
+    {
+        country.onValueChanged.AddListener(SelectCountry);
+        countryInput.onValueChanged.AddListener(ChangeCountrySelection);
+    }
+
+    private void ChangeCountrySelection(string text)
+    {
+        if (text == None)
+        {
+            country.ClearOptions();
+            country.AddOptions(options);
+            return;
+        }
+        var newOptions = options.Where(c => c.text.ToLower().StartsWith(text.ToLower()[0].ToString()) && c.text != None).ToList();
+        if (newOptions.Count == 0)
+        {
+            newOptions.Add(new TMP_Dropdown.OptionData(None));
+        }
+
+        country.ClearOptions();
+        country.AddOptions(newOptions);
+        SelectCountry(0);
+    }
+
     public void Init(int index, string selected = null)
     {
         id = index;
         if (options.Count == 0)
         {
-            conutry.ClearOptions();
-            conutry.AddOptions(new List<TMP_Dropdown.OptionData> { new TMP_Dropdown.OptionData(None) });
-            conutry.AddOptions(VaccinationWindow.countries.OrderBy(c => c.StateName).Select(c => new TMP_Dropdown.OptionData(c.StateName)).ToList());
-            options = conutry.options.ToList();
+            country.ClearOptions();
+            country.AddOptions(new List<TMP_Dropdown.OptionData> { new TMP_Dropdown.OptionData(None) });
+            country.AddOptions(VaccinationWindow.countries.OrderBy(c => c.StateName).Select(c => new TMP_Dropdown.OptionData(c.StateName)).ToList());
+            options = country.options.ToList();
         }
-        if (conutry.options.Count != options.Count)
+        if (country.options.Count != options.Count)
         {
-            conutry.ClearOptions();
-            conutry.AddOptions(options);
-            conutry.onValueChanged.AddListener(SelectCountry);
+            country.ClearOptions();
+            country.AddOptions(options);
         }
         if (string.IsNullOrEmpty(selected) || selected == None)
         {
-            percent.text = string.Empty;
-            population.text = string.Empty;
+            selected = None;
         }
-        else
-        {
-            var opIndex = options.IndexOf(options.First(c => c.text == selected));
-            conutry.SetValueWithoutNotify(opIndex);
-            SelectCountry(opIndex);
-        }
+        var opIndex = options.IndexOf(options.First(c => c.text == selected));
+        country.SetValueWithoutNotify(opIndex);
+        SelectCountry(opIndex);
     }
 
     private void SelectCountry(int index)
     {
-        if (index > 0)
+        var selected = country.options[index].text;
+        countryInput.text = selected;
+        if (selected != None)
         {
-            var data = VaccinationWindow.countries.First(c => c.StateName == options[index].text);
+            var data = VaccinationWindow.countries.First(c => c.StateName == selected);
             percent.text = $"{data.Percent:F2}%";
             population.text = $"{data.Population}";
-            OnCountrySelected?.Invoke(id, data.StateName);
         }
         else
         {
             percent.text = string.Empty;
             population.text = string.Empty;
-            OnCountrySelected?.Invoke(id, None);
         }
+        OnCountrySelected?.Invoke(id, selected);
     }
 
     public void DisableSelection()
     {
-        conutry.interactable = false;
+        country.interactable = false;
+        countryInput.interactable = false;
     }
 }
