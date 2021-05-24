@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Scripts.Data
@@ -36,26 +33,10 @@ namespace Assets.Scripts.Data
             return null;
         }
 
-        public override void TryGetNewData()
+        public override void TryGetNewData(Action<bool> updated)
         {
-            NetworkManager.I.Get("https://covid19.who.int/WHO-COVID-19-global-data.csv", (csv) =>
-            {
-                var caseData = CSVParserCases(csv);
-                if (!HasDataFor(caseData.updated))
-                {
-                    SaveData(csv, caseData.updated);
-                    OnNewData?.Invoke();
-                }
-            }, Debug.LogError);
-            NetworkManager.I.Get("https://covid19.who.int/who-data/vaccination-data.csv", (csv) =>
-            {
-                var vacData = CSVParserVaccination(csv, DateTime.Now);
-                if (!HasVacDataFor(vacData.day))
-                {
-                    SaveVacData(csv, vacData.day);
-                    OnNewData?.Invoke();
-                }
-            }, Debug.LogError);
+            NetworkManager.I.Get("https://covid19.who.int/WHO-COVID-19-global-data.csv", (csv) => UpdateData(csv, caseFileName, updated), Debug.LogError);
+            NetworkManager.I.Get("https://covid19.who.int/who-data/vaccination-data.csv", (csv) => UpdateData(csv, vacFileName, null), Debug.LogError);
         }
 
         private StateCaseData CSVParserCases(string csv)
@@ -101,13 +82,13 @@ namespace Assets.Scripts.Data
                 {
                     continue;
                 }
-                var percent = float.Parse(data[totalVac100Index]);
+                var percent = float.Parse(data[totalVac100Index], CultureInfo.GetCultureInfo("en-US"));
                 var pop = (int)(int.Parse(data[totalVacIndex]) / percent) * 100;
                 vacData.data.Add(new VacinationStateData
                 {
                     Percent = percent,
                     Population = pop,
-                    StateName = data[countryIndex]
+                    StateName = data[countryIndex].Replace("\"", "")
                 });
             }
             return vacData;

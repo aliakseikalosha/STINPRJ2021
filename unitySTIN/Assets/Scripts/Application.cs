@@ -8,7 +8,7 @@ public class Application : MonoBehaviour
 
     private IEnumerator Start()
     {
-        yield return new WaitUntil(()=>DataManager.I.HasDataFoDay(DataManager.I.CurrentDay));
+        yield return new WaitUntil(()=>DataManager.I.HasDataForDay(DataManager.I.CurrentDay));
         ui.DiffrenceWindow.Show();
     }
 }

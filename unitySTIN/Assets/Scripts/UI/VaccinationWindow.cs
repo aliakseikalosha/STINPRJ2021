@@ -6,18 +6,13 @@ public class VaccinationWindow : UserInterface.Window
 {
     public static List<VacinationStateData> countries = new List<VacinationStateData>();
     [SerializeField] private List<VacinationWindowElement> elements = null;
-    private List<string> selectedCountries = new List<string>();
+    private string[] selectedCountries;
     private readonly string dataKey = "VaccinationWindowCountries";
+    private readonly string firstCountry = "Czechia";
     protected override void Awake()
     {
         base.Awake();
         LoadCountries();
-        for (int i = 0; i < elements.Count; i++)
-        {
-            VacinationWindowElement item = elements[i];
-            item.OnCountrySelected += SetCountry;
-            item.Init(i, selectedCountries[i]);
-        }
     }
 
     private void SaveCoutries()
@@ -33,22 +28,19 @@ public class VaccinationWindow : UserInterface.Window
 
     private void LoadCountries()
     {
-        selectedCountries = new List<string>(elements.Count);
-        var data = PlayerPrefs.GetString(dataKey, string.Empty);
-        if (string.IsNullOrEmpty(data))
-        {
-            return;
-        }
+        selectedCountries = new string[elements.Count];
+        var data = PlayerPrefs.GetString(dataKey, $"{firstCountry},");
         var d = data.Split(',');
-        for (int i = 0; i < d.Length; i++)
+        for (int i = 0; i < d.Length - 1; i++)
         {
-            if (i >= selectedCountries.Count)
+            if (i >= selectedCountries.Length)
             {
                 Debug.LogError($"get more counry then can show  data:{data}");
                 continue;
             }
             selectedCountries[i] = d[i];
         }
+        selectedCountries[0] = firstCountry;
     }
 
     private void SetCountry(int index, string country)
@@ -70,6 +62,12 @@ public class VaccinationWindow : UserInterface.Window
         for (int i = 0; i < elements.Count; i++)
         {
             VacinationWindowElement item = elements[i];
+            if(i == 0)
+            {
+                item.DisableSelection();
+            }
+            item.OnCountrySelected -= SetCountry;
+            item.OnCountrySelected += SetCountry;
             item.Init(i, selectedCountries[i]);
         }
     }

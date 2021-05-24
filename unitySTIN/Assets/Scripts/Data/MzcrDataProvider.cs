@@ -27,17 +27,9 @@ namespace Assets.Scripts.Data
             };
         }
 
-        public override void TryGetNewData()
+        public override void TryGetNewData(Action<bool> updated)
         {
-            NetworkManager.I.Get("https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/zakladni-prehled.csv", (csv) =>
-            {
-                var caseData = CSVParser(csv);
-                if (!HasDataFor(caseData.updated))
-                {
-                    SaveData(csv, caseData.updated);
-                    OnNewData?.Invoke();
-                }
-            }, Debug.LogError);
+            NetworkManager.I.Get("https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/zakladni-prehled.csv", (csv) => UpdateData(csv, caseFileName, updated), Debug.LogError);
         }
 
         public override void SaveData(string csv, DateTime day)

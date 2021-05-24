@@ -9,7 +9,7 @@ public class DiffrenceWindowElement : MonoBehaviour
     public void Init(StateCaseData data, DateTime day, StateCaseData dataDiff = null)
     {
         bool showDiff = dataDiff != null;
-        var updated = showDiff ? dataDiff.updated : data.updated;
+        var updated = data.updated;
         text.text = $"New cases per day : {data.PerDay}{(showDiff ? HighlightDiffecence(data.PerDay, dataDiff.PerDay) : "")}\nTotal count:{data.Total}{(showDiff ? HighlightDiffecence(data.Total, dataDiff.Total) : "")}\nDate {day:dd/MM/yyyy}\nUpdate {updated:dd/MM/yyyy}";
     }
 

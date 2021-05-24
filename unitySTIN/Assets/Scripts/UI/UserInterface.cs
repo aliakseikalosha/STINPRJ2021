@@ -44,7 +44,7 @@ public class UserInterface : MonoBehaviour
         [SerializeField] protected TMP_Text prevDayText = null;
         [SerializeField] protected Button refresh = null;
         [SerializeField] protected Button otherScreen = null;
-        protected DateTime curretDay;
+        protected DateTime currentDay;
         protected Coroutine refreshing = null;
 
         protected virtual void Awake()
@@ -54,7 +54,9 @@ public class UserInterface : MonoBehaviour
             prevDay.onClick.AddListener(GoToPrevDay);
             otherScreen.onClick.AddListener(GoToOtherScreen);
             refresh.onClick.AddListener(RefreshData);
+            DataManager.I.OnNewData += OnGetNewData;
         }
+
         protected abstract void GoToOtherScreen();
         protected void RefreshData()
         {
@@ -66,7 +68,7 @@ public class UserInterface : MonoBehaviour
         protected virtual IEnumerator StartRefresh()
         {
             var wating = true;
-            DataManager.I.TryGetNewData(() => wating = false);
+            DataManager.I.TryGetNewData((b) => wating = false);
             refresh.interactable = false;
             while (wating)
             {
@@ -78,26 +80,30 @@ public class UserInterface : MonoBehaviour
         }
         protected virtual void GoToPrevDay()
         {
-            if (DataManager.I.HasDataForPrevDay(curretDay))
+            if (DataManager.I.HasDataForPrevDay(currentDay))
             {
-                ShowDay(DataManager.I.PrevDayWithData(curretDay));
+                ShowDay(DataManager.I.PrevDayWithData(currentDay));
             }
         }
         protected virtual void GoToNextDay()
         {
-            if (DataManager.I.HasDataForNextDay(curretDay))
+            if (DataManager.I.HasDataForNextDay(currentDay))
             {
-                ShowDay(DataManager.I.NextDayWithData(curretDay));
+                ShowDay(DataManager.I.NextDayWithData(currentDay));
             }
+        }
+        protected virtual void OnGetNewData()
+        {
+            ShowDay(DataManager.I.CurrentDay);
         }
 
         protected virtual void ShowDay(DateTime day)
         {
-            curretDay = day;
-            nextDay.interactable = DataManager.I.HasDataForNextDay(curretDay);
-            nextDayText.text = nextDay.interactable ? $"{DataManager.I.NextDayWithData(curretDay):dd/MM/yyyy}" : "No Data";
-            prevDay.interactable = DataManager.I.HasDataForPrevDay(curretDay);
-            prevDayText.text = prevDay.interactable ? $"{DataManager.I.PrevDayWithData(curretDay):dd/MM/yyyy}" : "No Data";
+            currentDay = day;
+            nextDay.interactable = DataManager.I.HasDataForNextDay(currentDay);
+            nextDayText.text = nextDay.interactable ? $"{DataManager.I.NextDayWithData(currentDay):dd/MM/yyyy}" : "No Data";
+            prevDay.interactable = DataManager.I.HasDataForPrevDay(currentDay);
+            prevDayText.text = prevDay.interactable ? $"{DataManager.I.PrevDayWithData(currentDay):dd/MM/yyyy}" : "No Data";
             refresh.interactable = (day.Date == DataManager.I.CurrentDay.Date);
         }
 

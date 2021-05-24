@@ -13,6 +13,7 @@ public class DiffrenceWindow : UserInterface.Window
     }
     protected override void ShowDay(DateTime day)
     {
+        base.ShowDay(day);
         DayData data = DataManager.I.DataFor(day);
         mzcrElement.Init(data.cases.Mzcr, day);
         whoElement.Init(data.cases.Who, day, data.cases.Mzcr);
