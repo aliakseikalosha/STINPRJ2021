@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class DataManager : MonoBehaviour
 {
@@ -69,6 +70,7 @@ public class DataManager : MonoBehaviour
 
     private IEnumerator Start()
     {
+        SendEvent("StatedApp");
         TryGetNewData();
         while (true)
         {
@@ -78,6 +80,7 @@ public class DataManager : MonoBehaviour
             {
                 yield return new WaitForSeconds((float)(nextUpdate - now).TotalSeconds);
                 TryGetNewData();
+                SendEvent("Download1100");
             }
             now = DateTime.Now;
             nextUpdate = new DateTime(now.Year, now.Month, now.Day, 22, 00, 00);
@@ -85,6 +88,7 @@ public class DataManager : MonoBehaviour
             {
                 yield return new WaitForSeconds((float)(nextUpdate - now).TotalSeconds);
                 yield return UpdatingData();
+                SendEvent("Download2200");
             }
             now = DateTime.Now;
             nextUpdate = new DateTime(now.Year, now.Month, now.Day, 00, 01, 00).AddDays(1);
@@ -92,8 +96,15 @@ public class DataManager : MonoBehaviour
             {
                 yield return new WaitForSeconds((float)(nextUpdate - now).TotalSeconds);
                 TryGetNewData();
+                SendEvent("Download0001");
             }
         }
+    }
+
+    private void SendEvent(string eventText)
+    {
+        AnalyticsResult ar = Analytics.CustomEvent(eventText);
+        Debug.Log($"Sent event {eventText} with result {ar}");
     }
 
     private IEnumerator UpdatingData()

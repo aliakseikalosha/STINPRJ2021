@@ -94,7 +94,7 @@ public class UserInterface : MonoBehaviour
         }
         protected virtual void OnGetNewData()
         {
-            ShowDay(DataManager.I.CurrentDay);
+            ShowDay(currentDay);
         }
 
         protected virtual void ShowDay(DateTime day)
