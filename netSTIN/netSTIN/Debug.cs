@@ -1,16 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace netSTIN
 {
     public static class Debug
     {
-        internal static void LogError(string v)
+        private static string CurrentLog => Path.Combine(Program.FilePath, logFileName);
+        private static string PrevLog => Path.Combine(Program.FilePath, prevLogFileName);
+        private readonly static string logFileName = "netLog.txt";
+        private readonly static string prevLogFileName = "netLogPrev.txt";
+        private static bool initializaed = false;
+
+        public static void LogError(string text)
         {
-            throw new NotImplementedException();
+            Log($"\nERROR!{text}");
+        }
+
+        public static void Log(string text)
+        {
+            Init();
+            File.AppendAllText(CurrentLog, $"\n{DateTime.Now}\t:\t{text}\n");
+        }
+
+        public static void Init()
+        {
+            if (initializaed)
+            {
+                return;
+            }
+            if (File.Exists(CurrentLog))
+            {
+                File.WriteAllText(PrevLog, File.ReadAllText(CurrentLog));
+                File.WriteAllText(CurrentLog, string.Empty);
+            }
+            initializaed = true;
         }
     }
 }

@@ -2,83 +2,40 @@
 using System.Collections;
 using System.IO;
 using System.IO.Compression;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace netSTIN
 {
     public class NetworkManager
     {
-        private static NetworkManager inst = null;
-        public static NetworkManager I => inst;
-
-        private void Awake()
+        public static void Get(string url, Action<string> onSuccess, Action<string> onError)
         {
-            if (I != null)
-            {
-                Debug.LogError($"THERE ARE 2 {GetType().Name}");
-            }
-            inst = this;
-        }
-        public void Get(string url, Action<string> onSuccess, Action<string> onError)
-        {
-            StartCoroutine(GetRequest(url, (w) =>
-            {
-                switch (w.result)
-                {
-                    case UnityWebRequest.Result.ConnectionError:
-                    case UnityWebRequest.Result.DataProcessingError:
-                    case UnityWebRequest.Result.ProtocolError:
-                        Debug.LogError($": HTTP Error: {w.error}");
-                        onError?.Invoke(w.error);
-                        break;
-                    case UnityWebRequest.Result.Success:
-                        string text;
-                        if (w.GetResponseHeader("Content-Encoding") == "gzip")
-                        {
-                            // GZipStream is from System.IO.Compression in .Net 4.5+
-                            var stream = new StreamReader(new GZipStream(new MemoryStream(w.downloadHandler.data),
-                                CompressionMode.Decompress));
-                            text = stream.ReadToEnd();
-                            stream.Close();
-                        }
-                        else
-                        {
-                            text = w.downloadHandler.text;
-                        }
-                        // Debug.Log($"{w.url}:Received: {text}");
-                        onSuccess?.Invoke(text);
-                        break;
-                }
-            }));
+            new Task(() => GetRequest(url, (w) =>
+              {
+                  if (w.IsSuccessStatusCode)
+                  {
+                      onSuccess?.Invoke(w.Content.ReadAsStringAsync().Result);
+                  }
+                  else
+                  {
+                      Debug.LogError($": HTTP Error: {w.StatusCode}");
+                      onError?.Invoke($"{url} get error with state {w.StatusCode}");
+                  }
+              })).Start();
         }
 
-        public void Get(string url, Action<UnityWebRequest> onDownload)
+        public static void Get(string url, Action<HttpResponseMessage> onDownload)
         {
-            StartCoroutine(GetRequest(url, onDownload));
+            new Task(() => GetRequest(url, onDownload)).Start();
         }
 
-        IEnumerator GetRequest(string uri, Action<UnityWebRequest> onDownload)
+        private static async void GetRequest(string uri, Action<HttpResponseMessage> onDownload)
         {
-            using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
-            {
-                // Request and wait for the desired page.
-                yield return webRequest.SendWebRequest();
-
-                string[] pages = uri.Split('/');
-                int page = pages.Length - 1;
-                onDownload?.Invoke(webRequest);
-                switch (webRequest.result)
-                {
-                    case UnityWebRequest.Result.ConnectionError:
-                    case UnityWebRequest.Result.DataProcessingError:
-                        Debug.LogError(pages[page] + ": Error: " + webRequest.error);
-                        break;
-                    case UnityWebRequest.Result.ProtocolError:
-                        Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
-                        break;
-                    case UnityWebRequest.Result.Success:
-                        break;
-                }
-            }
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync(uri);
+            var pageContents = await response.Content.ReadAsStringAsync();
+            onDownload?.Invoke(response);
         }
     }
 }

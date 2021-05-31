@@ -29,7 +29,7 @@ namespace netSTIN.Data
 
         public override void TryGetNewData(Action<bool> updated)
         {
-            NetworkManager.I.Get("https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/zakladni-prehled.csv", (csv) => UpdateData(csv, caseFileName, updated), Debug.LogError);
+            NetworkManager.Get("https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/zakladni-prehled.csv", (csv) => UpdateData(csv, caseFileName, updated), Debug.LogError);
         }
 
         public override void SaveData(string csv, DateTime day)

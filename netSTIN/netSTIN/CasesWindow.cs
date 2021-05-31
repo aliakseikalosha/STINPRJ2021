@@ -17,5 +17,9 @@ namespace netSTIN
             InitializeComponent();
         }
 
+        private void ChangeScreen_Click(object sender, EventArgs e)
+        {
+            Program.ChangeWindow();
+        }
     }
 }

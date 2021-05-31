@@ -29,12 +29,33 @@ namespace netSTIN
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.ChangeScreen = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // ChangeScreen
+            // 
+            this.ChangeScreen.Location = new System.Drawing.Point(450, 666);
+            this.ChangeScreen.Name = "ChangeScreen";
+            this.ChangeScreen.Size = new System.Drawing.Size(99, 23);
+            this.ChangeScreen.TabIndex = 1;
+            this.ChangeScreen.Text = "ChangeScreen";
+            this.ChangeScreen.UseVisualStyleBackColor = true;
+            this.ChangeScreen.Click += new System.EventHandler(this.ChangeScreen_Click);
+            // 
+            // VacinationWindow
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.Controls.Add(this.ChangeScreen);
+            this.Name = "VacinationWindow";
             this.Text = "VacinationWindow";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Button ChangeScreen;
     }
 }

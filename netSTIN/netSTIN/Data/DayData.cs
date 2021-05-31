@@ -5,5 +5,4 @@
         public VacinationData vacination;
         public CasesData cases;
     }
-
 }

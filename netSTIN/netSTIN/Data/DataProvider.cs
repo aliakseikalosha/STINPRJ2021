@@ -18,7 +18,7 @@ namespace netSTIN.Data
         }
         public string DirFor(DateTime day)
         {
-            return Path.Combine(UnityEngine.Application.persistentDataPath, $"{day:yyyyMMdd}");
+            return Path.Combine(Program.FilePath, $"{day:yyyyMMdd}");
         }
         public void UpdateData(string csv, string fileName, Action<bool> updated)
         {

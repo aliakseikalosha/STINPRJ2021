@@ -34,8 +34,8 @@ namespace netSTIN.Data
 
         public override void TryGetNewData(Action<bool> updated)
         {
-            NetworkManager.I.Get("https://covid19.who.int/WHO-COVID-19-global-data.csv", (csv) => UpdateData(csv, caseFileName, updated), Debug.LogError);
-            NetworkManager.I.Get("https://covid19.who.int/who-data/vaccination-data.csv", (csv) => UpdateData(csv, vacFileName, null), Debug.LogError);
+            NetworkManager.Get("https://covid19.who.int/WHO-COVID-19-global-data.csv", (csv) => UpdateData(csv, caseFileName, updated), Debug.LogError);
+            NetworkManager.Get("https://covid19.who.int/who-data/vaccination-data.csv", (csv) => UpdateData(csv, vacFileName, null), Debug.LogError);
         }
 
         private StateCaseData CSVParserCases(string csv)
