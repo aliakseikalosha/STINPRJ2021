@@ -1,4 +1,4 @@
-﻿
+
 namespace netSTIN
 {
     partial class CasesWindow
@@ -34,7 +34,7 @@ namespace netSTIN
             // 
             // ChangeScreen
             // 
-            this.ChangeScreen.Location = new System.Drawing.Point(438, 679);
+            this.ChangeScreen.Location = new System.Drawing.Point(450, 660);
             this.ChangeScreen.Name = "ChangeScreen";
             this.ChangeScreen.Size = new System.Drawing.Size(99, 23);
             this.ChangeScreen.TabIndex = 0;
@@ -49,7 +49,7 @@ namespace netSTIN
             this.ClientSize = new System.Drawing.Size(1008, 729);
             this.Controls.Add(this.ChangeScreen);
             this.Name = "CasesWindow";
-            this.Text = "Form1";
+            this.Text = "CasesWindow";
             this.ResumeLayout(false);
 
         }

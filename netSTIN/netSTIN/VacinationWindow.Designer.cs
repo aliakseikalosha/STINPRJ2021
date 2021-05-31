@@ -1,4 +1,4 @@
-﻿
+
 namespace netSTIN
 {
     partial class VacinationWindow
@@ -34,7 +34,7 @@ namespace netSTIN
             // 
             // ChangeScreen
             // 
-            this.ChangeScreen.Location = new System.Drawing.Point(450, 666);
+            this.ChangeScreen.Location = new System.Drawing.Point(450, 660);
             this.ChangeScreen.Name = "ChangeScreen";
             this.ChangeScreen.Size = new System.Drawing.Size(99, 23);
             this.ChangeScreen.TabIndex = 1;
