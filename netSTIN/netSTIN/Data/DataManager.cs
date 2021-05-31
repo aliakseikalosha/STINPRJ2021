@@ -3,10 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using UnityEngine.Analytics;
 
-public class DataManager : MonoBehaviour
+public class DataManager
 {
     public static DataManager I { get; private set; }
     public Action OnNewData;
@@ -172,5 +170,6 @@ public class DataManager : MonoBehaviour
         yield return new WaitUntil(() => mzcrDone && whoDone);
         gettingNewData = null;
         updated?.Invoke(newData);
+        SendEvent("TryGetNewData");
     }
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
-using UnityEngine;
 
-namespace Assets.Scripts.Data
+namespace netSTIN.Data
 {
     public abstract class DataProvider : IDataProvider
     {

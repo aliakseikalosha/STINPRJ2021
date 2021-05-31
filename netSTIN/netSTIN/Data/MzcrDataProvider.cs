@@ -1,9 +1,9 @@
-﻿using System;
+﻿using netSTIN;
+using System;
 using System.Globalization;
 using System.IO;
-using UnityEngine;
 
-namespace Assets.Scripts.Data
+namespace netSTIN.Data
 {
 
     public class MzcrDataProvider : DataProvider

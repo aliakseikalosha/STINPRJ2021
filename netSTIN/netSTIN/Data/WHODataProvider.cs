@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
-namespace Assets.Scripts.Data
+namespace netSTIN.Data
 {
     public class WHODataProvider : DataProvider, IDataProviderFull
     {

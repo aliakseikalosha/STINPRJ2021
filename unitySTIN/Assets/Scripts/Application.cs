@@ -1,14 +1,26 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Analytics;
 
-public class Application : MonoBehaviour
+namespace Assets.Scripts
 {
-    [SerializeField] private UserInterface ui;
-    [SerializeField] private DataManager data;
-
-    private IEnumerator Start()
+    public class Application : MonoBehaviour
     {
-        yield return new WaitUntil(()=>DataManager.I.HasDataForDay(DataManager.I.CurrentDay));
-        ui.DiffrenceWindow.Show();
+        [SerializeField] private UserInterface ui;
+        [SerializeField] private DataManager data;
+
+        private void Awake()
+        {
+            UnityEngine.Application.targetFrameRate = 60;
+            Analytics.initializeOnStartup = true;
+            Analytics.enabled = true;
+            Analytics.ResumeInitialization();
+        }
+
+        private IEnumerator Start()
+        {
+            yield return new WaitUntil(() => DataManager.I.HasDataForDay(DataManager.I.CurrentDay));
+            ui.DiffrenceWindow.Show();
+        }
     }
 }
