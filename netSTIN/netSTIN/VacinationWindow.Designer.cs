@@ -30,6 +30,9 @@ namespace netSTIN
         private void InitializeComponent()
         {
             this.ChangeScreen = new System.Windows.Forms.Button();
+            this.update = new System.Windows.Forms.Button();
+            this.nextDay = new System.Windows.Forms.Button();
+            this.prevDay = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ChangeScreen
@@ -42,11 +45,44 @@ namespace netSTIN
             this.ChangeScreen.UseVisualStyleBackColor = true;
             this.ChangeScreen.Click += new System.EventHandler(this.ChangeScreen_Click);
             // 
+            // update
+            // 
+            this.update.Location = new System.Drawing.Point(429, 12);
+            this.update.Name = "update";
+            this.update.Size = new System.Drawing.Size(146, 68);
+            this.update.TabIndex = 6;
+            this.update.Text = "Update";
+            this.update.UseVisualStyleBackColor = true;
+            this.update.Click += new System.EventHandler(this.update_Click);
+            // 
+            // nextDay
+            // 
+            this.nextDay.Location = new System.Drawing.Point(820, 25);
+            this.nextDay.Name = "nextDay";
+            this.nextDay.Size = new System.Drawing.Size(181, 42);
+            this.nextDay.TabIndex = 5;
+            this.nextDay.Text = "button2";
+            this.nextDay.UseVisualStyleBackColor = true;
+            this.nextDay.Click += new System.EventHandler(this.nextDay_Click);
+            // 
+            // prevDay
+            // 
+            this.prevDay.Location = new System.Drawing.Point(17, 25);
+            this.prevDay.Name = "prevDay";
+            this.prevDay.Size = new System.Drawing.Size(181, 42);
+            this.prevDay.TabIndex = 4;
+            this.prevDay.Text = "button1";
+            this.prevDay.UseVisualStyleBackColor = true;
+            this.prevDay.Click += new System.EventHandler(this.prevDay_Click);
+            // 
             // VacinationWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.Controls.Add(this.update);
+            this.Controls.Add(this.nextDay);
+            this.Controls.Add(this.prevDay);
             this.Controls.Add(this.ChangeScreen);
             this.Name = "VacinationWindow";
             this.Text = "VacinationWindow";
@@ -57,5 +93,8 @@ namespace netSTIN
         #endregion
 
         private System.Windows.Forms.Button ChangeScreen;
+        private System.Windows.Forms.Button update;
+        private System.Windows.Forms.Button nextDay;
+        private System.Windows.Forms.Button prevDay;
     }
 }
