@@ -11,8 +11,8 @@ namespace netSTIN
     static class Program
     {
         public static string FilePath = Path.Combine(Environment.ExpandEnvironmentVariables("%USERPROFILE%"), "AppData\\LocalLow\\KaloshaSafarikKanash\\STIN SP");
-        private static CasesWindow cases = new CasesWindow();
-        private static VacinationWindow vacination = new VacinationWindow();
+        private static CasesWindow cases;
+        private static VacinationWindow vacination;
         private static bool casesShown = true;
         /// <summary>
         ///  The main entry point for the application.
@@ -24,6 +24,8 @@ namespace netSTIN
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            cases = new CasesWindow();
+            vacination = new VacinationWindow();
             Application.Run(cases);
         }
 

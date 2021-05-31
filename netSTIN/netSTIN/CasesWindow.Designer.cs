@@ -33,6 +33,8 @@ namespace netSTIN
             this.prevDay = new System.Windows.Forms.Button();
             this.nextDay = new System.Windows.Forms.Button();
             this.update = new System.Windows.Forms.Button();
+            this.Czechia = new System.Windows.Forms.Label();
+            this.WHO = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // ChangeScreen
@@ -47,7 +49,7 @@ namespace netSTIN
             // 
             // prevDay
             // 
-            this.prevDay.Location = new System.Drawing.Point(9, 25);
+            this.prevDay.Location = new System.Drawing.Point(12, 25);
             this.prevDay.Name = "prevDay";
             this.prevDay.Size = new System.Drawing.Size(181, 42);
             this.prevDay.TabIndex = 1;
@@ -57,7 +59,7 @@ namespace netSTIN
             // 
             // nextDay
             // 
-            this.nextDay.Location = new System.Drawing.Point(812, 25);
+            this.nextDay.Location = new System.Drawing.Point(815, 25);
             this.nextDay.Name = "nextDay";
             this.nextDay.Size = new System.Drawing.Size(181, 42);
             this.nextDay.TabIndex = 2;
@@ -75,11 +77,31 @@ namespace netSTIN
             this.update.UseVisualStyleBackColor = true;
             this.update.Click += new System.EventHandler(this.update_Click);
             // 
+            // Czechia
+            // 
+            this.Czechia.AutoSize = true;
+            this.Czechia.Location = new System.Drawing.Point(49, 183);
+            this.Czechia.Name = "Czechia";
+            this.Czechia.Size = new System.Drawing.Size(38, 15);
+            this.Czechia.TabIndex = 4;
+            this.Czechia.Text = "label1";
+            // 
+            // WHO
+            // 
+            this.WHO.AutoSize = true;
+            this.WHO.Location = new System.Drawing.Point(577, 208);
+            this.WHO.Name = "WHO";
+            this.WHO.Size = new System.Drawing.Size(38, 15);
+            this.WHO.TabIndex = 5;
+            this.WHO.Text = "label2";
+            // 
             // CasesWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.Controls.Add(this.WHO);
+            this.Controls.Add(this.Czechia);
             this.Controls.Add(this.update);
             this.Controls.Add(this.nextDay);
             this.Controls.Add(this.prevDay);
@@ -87,6 +109,7 @@ namespace netSTIN
             this.Name = "CasesWindow";
             this.Text = "CasesWindow";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -96,6 +119,8 @@ namespace netSTIN
         private System.Windows.Forms.Button prevDay;
         private System.Windows.Forms.Button nextDay;
         private System.Windows.Forms.Button update;
+        private System.Windows.Forms.Label Czechia;
+        private System.Windows.Forms.Label WHO;
     }
 }
 

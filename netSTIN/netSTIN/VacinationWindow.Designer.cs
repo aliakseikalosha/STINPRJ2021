@@ -33,6 +33,7 @@ namespace netSTIN
             this.update = new System.Windows.Forms.Button();
             this.nextDay = new System.Windows.Forms.Button();
             this.prevDay = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // ChangeScreen
@@ -57,7 +58,7 @@ namespace netSTIN
             // 
             // nextDay
             // 
-            this.nextDay.Location = new System.Drawing.Point(820, 25);
+            this.nextDay.Location = new System.Drawing.Point(815, 25);
             this.nextDay.Name = "nextDay";
             this.nextDay.Size = new System.Drawing.Size(181, 42);
             this.nextDay.TabIndex = 5;
@@ -67,7 +68,7 @@ namespace netSTIN
             // 
             // prevDay
             // 
-            this.prevDay.Location = new System.Drawing.Point(17, 25);
+            this.prevDay.Location = new System.Drawing.Point(12, 25);
             this.prevDay.Name = "prevDay";
             this.prevDay.Size = new System.Drawing.Size(181, 42);
             this.prevDay.TabIndex = 4;
@@ -75,11 +76,22 @@ namespace netSTIN
             this.prevDay.UseVisualStyleBackColor = true;
             this.prevDay.Click += new System.EventHandler(this.prevDay_Click);
             // 
+            // comboBox1
+            // 
+            this.comboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.comboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(49, 233);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 23);
+            this.comboBox1.TabIndex = 7;
+            // 
             // VacinationWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.update);
             this.Controls.Add(this.nextDay);
             this.Controls.Add(this.prevDay);
@@ -96,5 +108,6 @@ namespace netSTIN
         private System.Windows.Forms.Button update;
         private System.Windows.Forms.Button nextDay;
         private System.Windows.Forms.Button prevDay;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
