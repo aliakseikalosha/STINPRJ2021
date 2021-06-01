@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace netSTIN
@@ -12,6 +13,7 @@ namespace netSTIN
         private static List<VacinationStateData> countries = null;
         private Dictionary<ComboBox, Label> comboToLabel = new Dictionary<ComboBox, Label>();
         private string[] selectedCountries;
+        private Dictionary<ComboBox, int> comboToIndexes = new Dictionary<ComboBox, int>();
         protected DateTime currentDay;
         public VacinationWindow()
         {
@@ -28,10 +30,10 @@ namespace netSTIN
             update.Enabled = (day.Date == DataManager.I.CurrentDay.Date);
             DayData data = DataManager.I.DataFor(day);
 
-
-            Init(combo1, label1);
-
             LoadCountries();
+            Init(combo1, label1);
+            UpdateData(combo1);
+
         }
 
         private void Init(ComboBox cb, Label label)
@@ -49,10 +51,11 @@ namespace netSTIN
 
         private void LoadCountries()
         {
-            if (countries == null)
-            {
-                countries = DataManager.I.DataFor(DataManager.I.CurrentDay).vacination.data;
-            }
+            countries = DataManager.I.DataFor(currentDay).vacination.data;
+            //if (countries == null)
+            //{
+            //    countries = DataManager.I.DataFor(DataManager.I.CurrentDay).vacination.data;
+            //}
             //selectedCountries = new string[elements.Count];
             //var data = PlayerPrefs.GetString(dataKey, $"{firstCountry},");
             //var d = data.Split(',');
@@ -75,22 +78,54 @@ namespace netSTIN
 
         private void prevDay_Click(object sender, EventArgs e)
         {
-
+            if (DataManager.I.HasDataForPrevDay(currentDay))
+            {
+                ShowDay(DataManager.I.PrevDayWithData(currentDay));
+            }
         }
 
         private void update_Click(object sender, EventArgs e)
         {
+            StartRefresh();
+        }
 
+        protected void StartRefresh()
+        {
+            var waiting = true;
+            update.Enabled = false;
+            DataManager.I.TryGetNewData((b) => waiting = false);
+            while (waiting)
+            {
+                Thread.Sleep(500);
+            }
+            update.Enabled = true;
+            ShowDay(DataManager.I.CurrentDay);
         }
 
         private void nextDay_Click(object sender, EventArgs e)
         {
-
+            if (DataManager.I.HasDataForNextDay(currentDay))
+            {
+                ShowDay(DataManager.I.NextDayWithData(currentDay));
+            }
         }
 
         private void SelectionChangeCommitted(object sender, EventArgs e)
         {
-            var cb = (ComboBox)sender;
+            UpdateData((ComboBox)sender);
+            //var cb = (ComboBox)sender;
+            //var label = comboToLabel[cb];
+            //var selected = (string)cb.SelectedItem;
+            //var data = countries.First(c => c.StateName == selected);
+            //label.Text = $"{data.Percent:F2}%\t\t{data.Population}";
+        }
+
+        private void UpdateData(ComboBox cb)
+        {
+            if(cb.SelectedItem == null)
+            {
+                return;
+            }
             var label = comboToLabel[cb];
             var selected = (string)cb.SelectedItem;
             var data = countries.First(c => c.StateName == selected);

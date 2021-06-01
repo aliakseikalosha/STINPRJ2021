@@ -85,8 +85,9 @@ namespace netSTIN
             this.combo1.Location = new System.Drawing.Point(43, 245);
             this.combo1.Name = "combo1";
             this.combo1.Size = new System.Drawing.Size(121, 23);
+            this.combo1.Sorted = true;
             this.combo1.TabIndex = 7;
-            this.combo1.SelectionChangeCommitted += new System.EventHandler(this.SelectionChangeCommitted);
+            this.combo1.SelectedIndexChanged += new System.EventHandler(this.SelectionChangeCommitted);
             // 
             // label1
             // 
