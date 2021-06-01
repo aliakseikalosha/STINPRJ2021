@@ -80,7 +80,7 @@ namespace netSTIN
             // Czechia
             // 
             this.Czechia.AutoSize = true;
-            this.Czechia.Location = new System.Drawing.Point(49, 183);
+            this.Czechia.Location = new System.Drawing.Point(50, 210);
             this.Czechia.Name = "Czechia";
             this.Czechia.Size = new System.Drawing.Size(38, 15);
             this.Czechia.TabIndex = 4;
@@ -89,7 +89,7 @@ namespace netSTIN
             // WHO
             // 
             this.WHO.AutoSize = true;
-            this.WHO.Location = new System.Drawing.Point(577, 208);
+            this.WHO.Location = new System.Drawing.Point(570, 210);
             this.WHO.Name = "WHO";
             this.WHO.Size = new System.Drawing.Size(38, 15);
             this.WHO.TabIndex = 5;
@@ -108,6 +108,7 @@ namespace netSTIN
             this.Controls.Add(this.ChangeScreen);
             this.Name = "CasesWindow";
             this.Text = "CasesWindow";
+            this.Shown += new System.EventHandler(this.CasesWindow_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

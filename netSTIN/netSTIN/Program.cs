@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -26,7 +27,7 @@ namespace netSTIN
             Application.SetCompatibleTextRenderingDefault(false);
             cases = new CasesWindow();
             vacination = new VacinationWindow();
-            Application.Run(cases);
+            WaitAndDo(() => DataManager.I.HasDataForDay(DataManager.I.CurrentDay), () => Application.Run(cases));
         }
 
         public static void ChangeWindow()
@@ -44,6 +45,15 @@ namespace netSTIN
                 cases.DesktopLocation = vacination.DesktopLocation;
             }
             casesShown = !casesShown;
+        }
+
+        public static void WaitAndDo(Func<bool> waitWhile, Action action)
+        {
+            while (!waitWhile())
+            {
+                Thread.Sleep(500);
+            }
+            action?.Invoke();
         }
     }
 }

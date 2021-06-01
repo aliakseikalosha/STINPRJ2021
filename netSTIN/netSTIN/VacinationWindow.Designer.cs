@@ -33,7 +33,8 @@ namespace netSTIN
             this.update = new System.Windows.Forms.Button();
             this.nextDay = new System.Windows.Forms.Button();
             this.prevDay = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.combo1 = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // ChangeScreen
@@ -76,29 +77,42 @@ namespace netSTIN
             this.prevDay.UseVisualStyleBackColor = true;
             this.prevDay.Click += new System.EventHandler(this.prevDay_Click);
             // 
-            // comboBox1
+            // combo1
             // 
-            this.comboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.comboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(49, 233);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 23);
-            this.comboBox1.TabIndex = 7;
+            this.combo1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.combo1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.combo1.FormattingEnabled = true;
+            this.combo1.Location = new System.Drawing.Point(43, 245);
+            this.combo1.Name = "combo1";
+            this.combo1.Size = new System.Drawing.Size(121, 23);
+            this.combo1.TabIndex = 7;
+            this.combo1.SelectionChangeCommitted += new System.EventHandler(this.SelectionChangeCommitted);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(171, 245);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 15);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "label1";
             // 
             // VacinationWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 729);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.combo1);
             this.Controls.Add(this.update);
             this.Controls.Add(this.nextDay);
             this.Controls.Add(this.prevDay);
             this.Controls.Add(this.ChangeScreen);
             this.Name = "VacinationWindow";
             this.Text = "VacinationWindow";
+            this.Shown += new System.EventHandler(this.VacinationWindow_Shown);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -108,6 +122,7 @@ namespace netSTIN
         private System.Windows.Forms.Button update;
         private System.Windows.Forms.Button nextDay;
         private System.Windows.Forms.Button prevDay;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox combo1;
+        private System.Windows.Forms.Label label1;
     }
 }

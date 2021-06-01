@@ -2,6 +2,7 @@
 using System.Collections;
 using System.IO;
 using System.IO.Compression;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -32,7 +33,11 @@ namespace netSTIN
 
         private static async void GetRequest(string uri, Action<HttpResponseMessage> onDownload)
         {
-            HttpClient client = new HttpClient();
+            HttpClientHandler handler = new HttpClientHandler()
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            };
+            HttpClient client = new HttpClient(handler);
             var response = await client.GetAsync(uri);
             var pageContents = await response.Content.ReadAsStringAsync();
             onDownload?.Invoke(response);

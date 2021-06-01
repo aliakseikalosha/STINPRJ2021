@@ -18,8 +18,8 @@ namespace netSTIN
 
         public static void Log(string text)
         {
-            Init();
-            File.AppendAllText(CurrentLog, $"\n{DateTime.Now}\t:\t{text}\n");
+            //Init();
+            //File.AppendAllText(CurrentLog, $"\n{DateTime.Now}\t:\t{text}\n");
         }
 
         public static void Init()
