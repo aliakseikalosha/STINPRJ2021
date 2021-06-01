@@ -32,14 +32,13 @@ namespace netSTIN
             update.Enabled = (day.Date == DataManager.I.CurrentDay.Date);
             LoadCountries();
             UpdateDataCzech(labelCzech);
-            Init(combo1, label1, 0);
-            UpdateData(combo1);
-            Init(combo2, label2, 1);
-            UpdateData(combo2);
-            Init(combo3, label3, 2);
-            UpdateData(combo3);
-            Init(combo4, label4, 3);
-            UpdateData(combo4);
+            var combos = new ComboBox[] {combo1,combo2,combo3,combo4 };
+            var labels = new Label[] {label1,label2,label3,label4 };
+            for (int i = 0; i < combos.Length; i++)
+            {
+                Init(combos[i], labels[i], i);
+                UpdateData(combos[i]);
+            }
         }
 
         private void Init(ComboBox cb, Label label, int index)
@@ -57,6 +56,10 @@ namespace netSTIN
             cb.Items.Clear();
             cb.Items.AddRange(countries.Select(c => (object)c.StateName).ToArray());
             cb.EndUpdate();
+            if (string.IsNullOrEmpty(selectedCountries[comboToIndexes[cb]]))
+            {
+                return;
+            }
             cb.SelectedIndex = cb.Items.IndexOf(selectedCountries[comboToIndexes[cb]]);
         }
 
@@ -163,6 +166,16 @@ namespace netSTIN
         private void VacinationWindow_Shown(object sender, EventArgs e)
         {
             ShowDay(DataManager.I.CurrentDay);
+        }
+
+        private void VacinationWindow_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void VacinationWindow_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Program.Close();
         }
     }
 }

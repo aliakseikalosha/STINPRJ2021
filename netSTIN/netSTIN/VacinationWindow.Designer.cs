@@ -203,6 +203,8 @@ namespace netSTIN
             this.MaximizeBox = false;
             this.Name = "VacinationWindow";
             this.Text = "VacinationWindow";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.VacinationWindow_FormClosed);
+            this.Load += new System.EventHandler(this.VacinationWindow_Load);
             this.Shown += new System.EventHandler(this.VacinationWindow_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -55,5 +55,10 @@ namespace netSTIN
             }
             action?.Invoke();
         }
+
+        public static void Close()
+        {
+            cases.Close();
+        }
     }
 }

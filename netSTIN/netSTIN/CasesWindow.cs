@@ -73,7 +73,7 @@ namespace netSTIN
         }
         private string HighlightDiffecence(int a, int b)
         {
-            return a != b ? $"<color=\"red\">{(a > b ? "+" : "")}{a - b}</color>" : "";
+            return a != b ? $"{(a > b ? "+" : "")}{a - b}" : "";
         }
 
         private void CasesWindow_Shown(object sender, EventArgs e)
