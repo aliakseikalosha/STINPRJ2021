@@ -100,7 +100,7 @@ namespace netSTIN.Data
                     SendEvent("Download0001");
                 }
             }
-            Debug.Log("Something went wrong");
+            //Debug.Log("Something went wrong");
         }
 
         private void SendEvent(string eventText)

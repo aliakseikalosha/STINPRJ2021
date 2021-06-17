@@ -19,11 +19,18 @@ namespace netSTIN.Data
             var casesTodayIndex = Array.IndexOf(rows[0].Split(','), "potvrzene_pripady_dnesni_den");
             var casesTotalIndex = Array.IndexOf(rows[0].Split(','), "potvrzene_pripady_celkem");
             var data = rows[1].Split(',');
+            var updateDate = DateTime.Parse(data[dateIndex], new CultureInfo("cs-CZ"));
+            var perDay = int.Parse(data[casesTodayIndex]);
+            var total = int.Parse(data[casesTotalIndex]);
+            if (HasDataFor(updateDate.AddDays(-1)))
+            {
+                perDay = total - CaseDataFor(updateDate.AddDays(-1)).Total;
+            }
             return new StateCaseData
             {
-                PerDay = int.Parse(data[casesTodayIndex]),
-                Total = int.Parse(data[casesTotalIndex]),
-                updated = DateTime.Parse(data[dateIndex], new CultureInfo("cs-CZ"))
+                PerDay = perDay,
+                Total = total,
+                updated = updateDate
             };
         }
 
